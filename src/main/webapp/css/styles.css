@@ -1,0 +1,42 @@
+.hero {
+  background: url("../images/hero_black.png") no-repeat center center/cover;
+  color: white;
+  height: 100%;
+  max-width: 100%;
+  padding: 200px 50px;
+  text-align: start;
+}
+
+.features {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .stack {
+    flex-direction: column;
+  }
+}
+
+#benefits {
+  padding: 20px;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#getting-started {
+  padding: 20px;
+}
+
+ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+a:hover {
+  cursor: pointer;
+}

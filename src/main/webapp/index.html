@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Insurance Broker Management System</title>
+    <link rel="stylesheet" href="https://nordcdn.net/ds/css/3.3.1/nord.min.css"
+        integrity="sha384-x2XdCI8Yog7KGRmrrGLegjFrrIYXEhGNxql/xEXdMoW5NkpEhlAkUHdQJxkL1vPg" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://nordcdn.net/ds/themes/8.1.1/nord-dark.css"
+        integrity="sha384-4mfQkitA1YUssjHukrfVhopnhPw9eM2tX8Z05rZ/5NJRmDJN1fQp2gGfwydx2SzL" crossorigin="anonymous" />
+    <link rel="stylesheet" href="css/styles.css">
+    <script type="module" src="https://nordcdn.net/ds/components/3.18.2/index.js"
+        integrity="sha384-Hxzh12RVoHTpU2FOGZp+/nJxzuDRDoLKCpOMahxaYjmeImNHJJFhconKw3OjRkDd"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <nord-header>
+        <h1 class="n-typescale-l">Insurance Broker Management System</h1>
+    </nord-header>
+
+    <section class="hero n-typeset">
+        <h1> <span>Welcome to the</span><br> Insurance Broker Management System</h1>
+        <p class="n-font-size-xl">The Insurance Broker Management System is designed to help insurance brokers
+            efficiently manage their client data, insurance policies, and claims. Our user-friendly interface and
+            powerful features streamline your workflow, allowing you to focus on providing the best service to your
+            clients.</p>
+        <nord-stack class="n-margin-bs-l">
+            <nord-button-group variant="spaced" wrap>
+                <nord-button variant="secondary" id="registerButton" size="l" target="_self">Register</nord-button>
+                <nord-button variant="primary" id="loginButton" size="l" target="_self">Login</nord-button>
+            </nord-button-group>
+        </nord-stack>
+    </section>
+
+    <section class="features n-typeset">
+        <h1>Features</h1>
+        <nord-stack class="stack" direction="horizontal" gap="l">
+            <nord-card padding="l">
+                <h2 slot="header">Customer Management</h2>
+                <nord-stack direction="horizontal">
+                    <p>
+                        Easily add, view, update, and delete customer records.
+                    </p>
+                </nord-stack>
+            </nord-card>
+            <nord-card padding="l">
+                <h2 slot="header">Policy Management</h2>
+                <nord-stack direction="horizontal">
+                    <p>
+                        Create, assign, view, and manage insurance policies for your clients.
+                    </p>
+                </nord-stack>
+            </nord-card>
+            <nord-card padding="l">
+                <h2 slot="header">Claims Handling</h2>
+                <nord-stack direction="horizontal">
+                    <p>
+                        Keep track of claims and their statuses to ensure timely processing.
+                    </p>
+                </nord-stack>
+            </nord-card>
+        </nord-stack>
+        <nord-stack class="stack n-margin-bs-l" direction="horizontal" gap="l">
+            <nord-card padding="l">
+                <h2 slot="header">Data Storage</h2>
+                <nord-stack direction="horizontal">
+                    <p>
+                        All data is stored securely in XML or JSON format, ensuring data integrity and ease of access.
+                    </p>
+                </nord-stack>
+            </nord-card>
+            <nord-card padding="l">
+                <h2 slot="header">Thread Safety</h2>
+                <nord-stack direction="horizontal">
+                    <p>
+                        The system is designed to handle multiple users simultaneously without data corruption.
+                    </p>
+                </nord-stack>
+            </nord-card>
+        </nord-stack>
+    </section>
+
+    <section id="benefits" class="n-typeset">
+        <h2>Benefits of Using Our System</h2>
+        <div class="benefit-item">
+            <nord-icon class="n-margin-ie-l" name="interface-setting-slider"></nord-icon>
+            <h3>Increase Efficiency</h3>
+            <p>Streamline your processes by managing customer and policy data all in one place, reducing time spent on
+                manual tasks.</p>
+        </div>
+        <div class="benefit-item">
+            <nord-icon class="n-margin-ie-l" name="user-multiple"></nord-icon>
+            <h3>Improve Collaboration</h3>
+            <p>Enhance teamwork and communication among brokers, ensuring everyone is on the same page.</p>
+        </div>
+        <div class="benefit-item">
+            <nord-icon class="n-margin-ie-l" name="interface-warning"></nord-icon>
+            <h3>Reduce Errors</h3>
+            <p>Minimize mistakes with automated data handling and a clear user interface that guides you through each
+                step.</p>
+        </div>
+        <div class="benefit-item">
+            <nord-icon class="n-margin-ie-l" name="user-checked"></nord-icon>
+            <h3>Improve Customer Satisfaction</h3>
+            <p>Provide timely and accurate information to your clients, fostering trust and loyalty.</p>
+        </div>
+    </section>
+
+    <section id="getting-started" class="n-typeset">
+        <h2>Getting Started with the System</h2>
+        <p>Follow these simple steps to begin using the Insurance Broker Management System:</p>
+        <ol>
+            <li>
+                <strong>Log In:</strong> Use your credentials to access the system. If you don’t have an account,
+                contact your administrator.
+            </li>
+            <li>
+                <strong>Add New Customers:</strong> Navigate to the <a href="add-customer.html">Add Customer</a> page to
+                input customer details.
+            </li>
+            <li>
+                <strong>Manage Policies:</strong> Go to the <a href="add-policy.html">Add Policy</a> section to create
+                and manage insurance policies.
+            </li>
+            <li>
+                <strong>View Data:</strong> Check the <a href="view-customers.html">View Customers</a> and <a
+                    href="view-policies.html">View Policies</a> pages to see your records.
+            </li>
+            <li>
+                <strong>Contact Support:</strong> If you encounter any issues, reach out to your system administrator
+                for assistance.
+            </li>
+        </ol>
+    </section>
+
+
+    <nord-modal id="register_modal" size="s" aria-labelledby="title">
+        <h2 slot="header" id="title">Register as a Broker</h2>
+        <nord-card padding="l">
+            <form action="register" method="post">
+                <nord-stack>
+                    <nord-input id="registerUsername" label="Username" expand required hide-required name="rusername"
+                        type="email" placeholder="enter your username"></nord-input>
+                    <nord-input id="registerEmail" label="Email Address" expand required hide-required name="remail"
+                        type="email" placeholder="enter your email address">
+                    </nord-input>
+                    <nord-input id="registerPassword" label="Password" expand required hide-required name="rpassword"
+                        type="password" placeholder="enter your password">
+                        a
+                    </nord-input>
+                    <nord-input id="registerCPassword" label="Confirm Password" expand required hide-required
+                        name="rcpassword" type="password" placeholder="confirm your password">
+                    </nord-input>
+                    <nord-button type="submit" expand variant="primary">Register</nord-button>
+                </nord-stack>
+            </form>
+        </nord-card>
+        <nord-card class="n-align-center n-margin-bs-l"> Already an user? <a onclick="openLoginModal()">Login</a>.
+        </nord-card>
+
+    </nord-modal>
+
+    <nord-modal id="login_modal" size="s" aria-labelledby="title">
+        <h2 slot="header" id="title">Log In as a Broker</h2>
+        <nord-card padding="l">
+            <form method="post">
+                <nord-stack>
+                    <nord-input id="loginEmail" label="Username" expand required hide-required name="lemail"
+                        type="email" placeholder="enter your email address"></nord-input>
+                    <nord-input id="loginPassword" label="Password" expand required hide-required name="lpassword"
+                        type="password" placeholder="enter your password">
+                    </nord-input>
+                    <nord-button type="submit" expand variant="primary">Log In</nord-button>
+                </nord-stack>
+            </form>
+        </nord-card>
+        <nord-card class="n-align-center n-margin-bs-l"> New User? <a onclick="openRegisterModal()">Register</a>.
+        </nord-card>
+
+    </nord-modal>
+
+
+    <nord-footer class="n-typeset">
+        <p>&copy; 2024 Insurance Broker Management System. All rights reserved.</p>
+    </nord-footer>
+
+    <script>
+        document.getElementById("registerButton").addEventListener("click", e => document.getElementById("register_modal").showModal())
+        document.getElementById("loginButton").addEventListener("click", e => document.getElementById("login_modal").showModal())
+
+        const openLoginModal = () => {
+            document.getElementById("register_modal").close()
+            document.getElementById("login_modal").showModal()
+        }
+
+        const openRegisterModal = () => {
+            document.getElementById("login_modal").close()
+            document.getElementById("register_modal").showModal()
+        }
+    </script>
+</body>
+
+</html>
