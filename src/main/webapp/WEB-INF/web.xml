@@ -10,6 +10,14 @@
     <servlet-name>PolicyController</servlet-name>
     <url-pattern>/PolicyController</url-pattern>
   </servlet-mapping>
+  <servlet>
+     <servlet-name>CustomerController</servlet-name>
+     <servlet-class>com.ibms.controller.CustomerController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>CustomerController</servlet-name>
+      <url-pattern>/CustomerController</url-pattern>
+  </servlet-mapping>
   <display-name>BrokerManagementApp</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
