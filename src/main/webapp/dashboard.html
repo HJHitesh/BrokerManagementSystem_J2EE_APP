@@ -125,13 +125,37 @@
                 </form>
             </nord-card>
 
-            <!-- View/Edit Users Card -->
-            <nord-card id="viewEditUserCard" style="display: none;">
-                <h2 slot="header">View/Edit Users</h2>
-                <div id="userList">
-                    <nord-banner variant="info">User list will be displayed here.</nord-banner>
-                </div>
-            </nord-card>
+<!-- View/Edit Users Card --> <nord-card id="viewEditUserCard"
+		style="display: none;">
+	<h2 slot="header">View/Edit Users</h2>
+	<div>
+		<table id="userTable" class="display">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Email</th>
+					<th>Phone</th>
+					<th>Actions</th>
+				</tr>
+			</thead>
+			<tbody id="customerList">
+				
+			</tbody>
+		</table>
+	</div>
+	</nord-card>
+	<nord-card id="editUserCard" style="display: none;">
+    <h2 slot="header">Edit User</h2>
+    <form id="editUserForm" action="CustomerController" method="POST">
+        <nord-input label="Username" name="username" required></nord-input>
+        <nord-input label="Email" name="email" required></nord-input>
+        <nord-input label="Phone Number" name="phoneNo"></nord-input>
+        <input type="hidden" name="userId">
+        <input type="hidden" name="action" value="edit">
+        <nord-button type="submit" variant="primary">Save Changes</nord-button>
+    </form>
+</nord-card>
+	
 
             <!-- View Policies Card -->
             <nord-card id="viewPoliciesCard" style="display: none;">
@@ -307,6 +331,84 @@
                 });
             }
         }
+        
+        function fetchUsers() {
+            fetch('CustomerController') 
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data); 
+                    displayUsers(data); 
+                })
+                .catch(error => {
+                    console.error('Error fetching users:', error);
+                });
+        }
+
+		function displayUsers(users) {
+    const customerList = $('#customerList');
+    customerList.empty(); 
+
+    if (users.length === 0) {
+        customerList.append('<nord-banner variant="info">No users found.</nord-banner>');
+        return;
+    }
+
+    users.forEach(user => {
+        const userItem = `
+            <tr>
+                <td>${user.name || 'N/A'}</td>
+                <td>${user.email || 'N/A'}</td>
+                <td>${user.phone || 'N/A'}</td>
+                <td>
+                    <nord-button variant="secondary" id="editUser-${user.id}" onclick="editUser('${user.id}', '${user.name}', '${user.email}', '${user.phone}')">Edit</nord-button>
+                    <nord-button variant="danger" id="deleteUser-${user.id}" onclick="deleteUser('${user.id}')">Delete</nord-button>
+                </td>
+            </tr>
+        `;
+        customerList.append(userItem);
+    });
+
+    $('#userTable').DataTable({
+        destroy: true,
+        paging: true,
+        searching: true,
+        ordering: true,
+        info: false,
+    });
+}
+		function editUser(userId, name, email, phone) {
+            document.getElementById('viewEditUserCard').style.display = 'none';  
+
+            const editUserCard = document.getElementById('editUserCard');
+            editUserCard.style.display = 'block';
+
+            
+            document.querySelector('#editUserForm [name="username"]').value = name;
+            document.querySelector('#editUserForm [name="email"]').value = email;
+            document.querySelector('#editUserForm [name="phoneNo"]').value = phone;
+            document.querySelector('#editUserForm [name="userId"]').value = userId;
+        }
+
+		function deleteUser(userId) {
+            if (confirm("Are you sure you want to delete this user?")) {
+                fetch(`CustomerController?action=delete&userId=${userId}`, { method: 'POST' })
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result.success) {
+                            alert('User deleted successfully');
+                            $('#userTable').DataTable().destroy();
+                            fetchUsers(); 
+                        } else {
+                            alert('Error deleting user');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting user:', error);
+                        alert('An error occurred. Please try again.');
+                    });
+            }
+        }
+
     </script>
 
 </body>
