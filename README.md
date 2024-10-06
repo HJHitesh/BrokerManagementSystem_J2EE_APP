@@ -33,6 +33,6 @@ To run the system locally, follow these steps:
 - Run the project by deploying it on the server
 ## Group Members
 
-- Hitesh Jha [@HJHitesh](https://github.com/HJHitesh)
-- Neel Kachhia [@neelkachhia1310](https://github.com/neelkachhia1310)
-- Abdul Mubeen [@abdulmubeen](https://github.com/abdulmubeen)
+- Hitesh Kamalkant Jha (N01610330) [@HJHitesh](https://github.com/HJHitesh)
+- Neel Kachhia (N01609700) [@neelkachhia1310](https://github.com/neelkachhia1310)
+- Abdul Mubeen Mohammed (N01611677) [@abdulmubeen](https://github.com/abdulmubeen)
