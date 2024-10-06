@@ -20,11 +20,11 @@ public class PolicyRepository {
 	
     private final ObjectMapper objectMapper;
     
-    private static final String FILE_PATH = "/Users/hitesh/DRIVE/CANADA/SEM3/J2EEE/J2EE_WORKSPACE/BrokerManagementApp/src/main/webapp/policies.json";
-
+    private final String FILE_PATH;
+    
     public PolicyRepository(ServletContext context) {
         this.objectMapper = new ObjectMapper();
-        //this.FILE_PATH = context.getRealPath("/policies.json");
+        this.FILE_PATH = context.getRealPath("/policies.json");
         
     }
 

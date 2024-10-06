@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Customer {
+	
 	private String id;
     private String name;
     private String email;
@@ -12,23 +13,23 @@ public class Customer {
     public Customer() {
     }
     
-//    public Customer(String id, String name, String email, String phone) {
-//        this.id = id;
-//        this.name = name;
-//        this.email = email;
-//        this.phone = phone;
-//    }
-    
-    @JsonCreator
-    public Customer(@JsonProperty("id") String id, 
-                    @JsonProperty("name") String name, 
-                    @JsonProperty("email") String email, 
-                    @JsonProperty("phone") String phone) {
+    public Customer(String id, String name, String email, String phone) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.phone = phone;
     }
+    
+//    @JsonCreator
+//    public Customer(@JsonProperty("id") String id, 
+//                    @JsonProperty("name") String name, 
+//                    @JsonProperty("email") String email, 
+//                    @JsonProperty("phone") String phone) {
+//        this.id = id;
+//        this.name = name;
+//        this.email = email;
+//        this.phone = phone;
+//    }
 
 	public String getId() {
 		return id;

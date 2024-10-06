@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.ibms.repository;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,10 +14,13 @@ public class CustomerRepository {
     private static final Logger LOGGER = Logger.getLogger(CustomerRepository.class.getName());
 
     private final ObjectMapper objectMapper;
-    private static final String FILE_PATH = "C:\\Users\\neelk\\eclipse-workspace\\BrokerManagementApp\\src\\main\\webapp\\customers.json";  // Replace with your actual file path
+    //private static final String FILE_PATH = "C:\\Users\\neelk\\eclipse-workspace\\BrokerManagementApp\\src\\main\\webapp\\customers.json";  // Replace with your actual file path
 
+    private final String FILE_PATH;
+    
     public CustomerRepository(ServletContext context) {
         this.objectMapper = new ObjectMapper();
+        this.FILE_PATH = context.getRealPath("/customers.json");
         
     }
 

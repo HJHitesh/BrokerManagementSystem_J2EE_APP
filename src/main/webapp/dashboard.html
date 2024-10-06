@@ -114,13 +114,14 @@
                 </form>
             </nord-card>
 
-            <!-- Add New User Card -->
+          <!-- Add New User Card -->
             <nord-card id="addUserCard" style="display: none;">
                 <h2 slot="header">Add New User</h2>
-                <form id="addUserForm" action="/addUser" method="POST">
+                <form id="addUserForm" action="CustomerController" method="POST">
                     <nord-input label="Username" name="username" required></nord-input>
                     <nord-input label="Email" name="email" required></nord-input>
-                    <nord-input label="Role" name="role" required></nord-input>
+                    <nord-input label="Phone" name="phone" required></nord-input>
+                     <input type="hidden" name="action" value="add">
                     <nord-button type="submit" variant="primary">Add User</nord-button>
                 </form>
             </nord-card>
@@ -149,7 +150,7 @@
     <form id="editUserForm" action="CustomerController" method="POST">
         <nord-input label="Username" name="username" required></nord-input>
         <nord-input label="Email" name="email" required></nord-input>
-        <nord-input label="Phone Number" name="phoneNo"></nord-input>
+        <nord-input label="Phone Number" name="phone"></nord-input>
         <input type="hidden" name="userId">
         <input type="hidden" name="action" value="edit">
         <nord-button type="submit" variant="primary">Save Changes</nord-button>
@@ -225,6 +226,8 @@
             addUserCard.style.display = "none";
             viewEditUserCard.style.display = "block";
             viewPoliciesCard.style.display = "none";
+            fetchUsers();
+            
         });
 
         viewPoliciesNavItem.addEventListener("click", () => {
@@ -345,37 +348,38 @@
         }
 
 		function displayUsers(users) {
-    const customerList = $('#customerList');
-    customerList.empty(); 
+    		const customerList = $('#customerList');
+    		customerList.empty(); 
 
-    if (users.length === 0) {
-        customerList.append('<nord-banner variant="info">No users found.</nord-banner>');
-        return;
-    }
+    		if (users.length === 0) {
+       			 customerList.append('<nord-banner variant="info">No users found.</nord-banner>');
+        		return;
+   			 }
 
-    users.forEach(user => {
-        const userItem = `
-            <tr>
-                <td>${user.name || 'N/A'}</td>
-                <td>${user.email || 'N/A'}</td>
-                <td>${user.phone || 'N/A'}</td>
-                <td>
-                    <nord-button variant="secondary" id="editUser-${user.id}" onclick="editUser('${user.id}', '${user.name}', '${user.email}', '${user.phone}')">Edit</nord-button>
-                    <nord-button variant="danger" id="deleteUser-${user.id}" onclick="deleteUser('${user.id}')">Delete</nord-button>
-                </td>
-            </tr>
-        `;
-        customerList.append(userItem);
-    });
+    		users.forEach(user => {
+       		 		const userItem = `
+            				<tr>
+				                <td>${user.name || 'N/A'}</td>
+				                <td>${user.email || 'N/A'}</td>
+				                <td>${user.phone || 'N/A'}</td>
+				                <td>
+				                    <nord-button variant="secondary" id="editUser-${user.id}" onclick="editUser('${user.id}', '${user.name}', '${user.email}', '${user.phone}')">Edit</nord-button>
+				                    <nord-button variant="danger" id="deleteUser-${user.id}" onclick="deleteUser('${user.id}')">Delete</nord-button>
+				                </td>
+           					 </tr>
+      						  `;
+        	customerList.append(userItem);
+    		});
 
-    $('#userTable').DataTable({
-        destroy: true,
-        paging: true,
-        searching: true,
-        ordering: true,
-        info: false,
-    });
-}
+		    $('#userTable').DataTable({
+		        destroy: true,
+		        paging: true,
+		        searching: true,
+		        ordering: true,
+		        info: false,
+		    });
+		}
+		
 		function editUser(userId, name, email, phone) {
             document.getElementById('viewEditUserCard').style.display = 'none';  
 
@@ -385,7 +389,7 @@
             
             document.querySelector('#editUserForm [name="username"]').value = name;
             document.querySelector('#editUserForm [name="email"]').value = email;
-            document.querySelector('#editUserForm [name="phoneNo"]').value = phone;
+            document.querySelector('#editUserForm [name="phone"]').value = phone;
             document.querySelector('#editUserForm [name="userId"]').value = userId;
         }
 
@@ -408,6 +412,25 @@
                     });
             }
         }
+		
+		function assignPolicy(){
+			
+			fetch(`PolicyController?action=assign&policyNo=${userId}&assignTo=${userEmail}` ,{ method: 'POST'})
+				.then(response => response.json())
+				.then(result => {
+                    if (result.success) {
+                        alert(' Policy Assigned to User successfully');
+                        $('#userTable').DataTable().destroy();
+                        fetchUsers(); 
+                    } else {
+                        alert('Error deleting user');
+                    }
+                })
+				.catch(error => {
+                        console.error('Error deleting user:', error);
+                        alert('An error occurred. Please try again.');
+                });	
+		}
 
     </script>
 
