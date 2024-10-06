@@ -1,0 +1,77 @@
+.hero {
+  color: white;
+  height: 100%;
+  max-width: 100%;
+  padding: 200px 50px;
+  text-align: start;
+  position: relative; /* Add this to create a new stacking context */
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: -1;
+}
+
+.features {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .stack {
+    flex-direction: column;
+  }
+}
+
+#benefits {
+  padding: 20px;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.getting-started-section {
+  background-color: #333;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  border: 1px solid #555;
+  border-radius: 10px;
+}
+
+.getting-started-intro {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.getting-started-steps {
+  counter-reset: step;
+}
+
+.getting-started-steps li {
+  margin-bottom: 20px;
+}
+
+.getting-started-steps strong {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 10px;
+}
