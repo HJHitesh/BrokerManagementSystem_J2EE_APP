@@ -5,33 +5,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Insurance Broker Management System</title>
-    <link rel="stylesheet" href="https://nordcdn.net/ds/css/3.3.1/nord.min.css" integrity="sha384-x2XdCI8Yog7KGRmrrGLegjFrrIYXEhGNxql/xEXdMoW5NkpEhlAkUHdQJxkL1vPg" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://nordcdn.net/ds/themes/8.1.1/nord-dark.css" integrity="sha384-4mfQkitA1YUssjHukrfVhopnhPw9eM2tX8Z05rZ/5NJRmDJN1fQp2gGfwydx2SzL" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://nordcdn.net/ds/css/3.3.1/nord.min.css"
+        integrity="sha384-x2XdCI8Yog7KGRmrrGLegjFrrIYXEhGNxql/xEXdMoW5NkpEhlAkUHdQJxkL1vPg" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://nordcdn.net/ds/themes/8.1.1/nord-dark.css"
+        integrity="sha384-4mfQkitA1YUssjHukrfVhopnhPw9eM2tX8Z05rZ/5NJRmDJN1fQp2gGfwydx2SzL" crossorigin="anonymous" />
     <link rel="stylesheet" href="css/styles.css">
-    <script type="module" src="https://nordcdn.net/ds/components/3.18.2/index.js" integrity="sha384-Hxzh12RVoHTpU2FOGZp+/nJxzuDRDoLKCpOMahxaYjmeImNHJJFhconKw3OjRkDd" crossorigin="anonymous"></script>
+    <script type="module" src="https://nordcdn.net/ds/components/3.18.2/index.js"
+        integrity="sha384-Hxzh12RVoHTpU2FOGZp+/nJxzuDRDoLKCpOMahxaYjmeImNHJJFhconKw3OjRkDd"
+        crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
     <style>
-   
         table.dataTable thead th {
-            background-color: #4CAF50; 
-            color: white; 
+            background-color: #4CAF50;
+            color: white;
             font-weight: bold;
         }
 
-     
+
         table.dataTable tbody tr {
-            background-color: #f2f2f2; 
+            background-color: #f2f2f2;
         }
 
-     
+
         table.dataTable tbody tr td {
-            color: #333; 
+            color: #333;
         }
 
         table.dataTable tbody tr:hover {
-            background-color: #ddd; 
+            background-color: #ddd;
         }
     </style>
 </head>
@@ -41,7 +44,8 @@
     <nord-layout>
         <nord-navigation slot="nav">
             <nord-nav-group heading="Workspace">
-                <nord-nav-item href="#" active icon="navigation-dashboard">Dashboard</nord-nav-item>
+                <nord-nav-item id="dashboardNavItem" href="#" active
+                    icon="navigation-dashboard">Dashboard</nord-nav-item>
                 <nord-nav-item icon="navigation-payments">
                     Policies
                     <nord-nav-group slot="subnav">
@@ -54,27 +58,19 @@
                     Users
                     <nord-nav-group slot="subnav">
                         <nord-nav-item icon="user-add" href="#" id="addUserNavItem">Add New User</nord-nav-item>
-                        <nord-nav-item icon="user-edit" href="#" id="viewEditUserNavItem">View/Edit Users</nord-nav-item>
+                        <nord-nav-item icon="user-edit" href="#" id="viewEditUserNavItem">View/Edit
+                            Users</nord-nav-item>
                     </nord-nav-group>
                 </nord-nav-item>
-                <nord-nav-item href="#" icon="navigation-settings">Settings</nord-nav-item>
             </nord-nav-group>
             <nord-dropdown expand slot="footer">
                 <nord-button slot="toggle" expand>
-                    <nord-avatar slot="start" aria-hidden="true" name="Laura Williams"></nord-avatar>
+                    <nord-avatar slot="start" aria-hidden="true" name="brokerName"></nord-avatar>
                     Laura Williams
                 </nord-button>
                 <nord-dropdown-group>
                     <nord-dropdown-item href="#">View profile</nord-dropdown-item>
                     <nord-dropdown-item>Settings</nord-dropdown-item>
-                </nord-dropdown-group>
-                <nord-dropdown-group>
-                    <nord-dropdown-item>
-                        Show keyboard shortcuts
-                        <div slot="end" class="n-color-text-weaker n-font-size-xs">Cmd+K</div>
-                    </nord-dropdown-item>
-                    <nord-dropdown-item>Help & Support</nord-dropdown-item>
-                    <nord-dropdown-item>API</nord-dropdown-item>
                 </nord-dropdown-group>
                 <nord-dropdown-item>
                     Sign out
@@ -84,22 +80,41 @@
         </nord-navigation>
         <nord-header slot="header">
             <h1 class="n-typescale-l">Dashboard</h1>
-            <nord-button variant="primary" slot="end" id="createNewPolicyButton">
-                <nord-icon slot="start" name="interface-add-small"></nord-icon>
-                Create new
-            </nord-button>
             <nord-tooltip id="export" position="block-end"> Export data as Spreadsheet </nord-tooltip>
         </nord-header>
         <nord-stack gap="l">
+            <nord-card id="dashboard">
+                <nord-banner variant="info">
+                    Welcome to the Insurance Broker Management System. You can create/update policies, assign policies
+                    to
+                    users, add new users, view/edit users, and view policies.
+                </nord-banner>
+                <nord-card class="n-margin-bs-l">
+                    <h2 slot="header">Quick Stats</h2>
+                    <nord-stack gap="m" direction="horizontal">
+                        <nord-card>
+                            <h3 slot="header">Total Policies</h3>
+                            <p slot="footer">10</p>
+                        </nord-card>
+                        <nord-card>
+                            <h3 slot="header">Total Users</h3>
+                            <p slot="footer">5</p>
+                        </nord-card>
+                    </nord-stack>
+                </nord-card>
+            </nord-card>
             <!-- Create New Policy Card -->
             <nord-card id="createPolicyCard">
                 <h2 slot="header">Create/Update Policy</h2>
                 <form id="createPolicyForm" action="PolicyController" method="POST">
                     <nord-input label="Policy Name" name="policyName" id="policyName" required></nord-input>
-                    <nord-input label="Policy Type" name="policyType" id="policyType" required></nord-input>
-                    <nord-input label="Policy Premium" name="premium" id="premium" required></nord-input>
+                    <nord-input class="n-margin-bs-l" label="Policy Type" name="policyType" id="policyType"
+                        required></nord-input>
+                    <nord-input class="n-margin-bs-l" label="Policy Premium" name="premium" id="premium"
+                        required></nord-input>
                     <input type="hidden" name="action" id="formAction" value="create">
-                    <nord-button type="submit" variant="primary" id="submitPolicyButton">Create Policy</nord-button>
+                    <nord-button class="n-margin-bs-l" type="submit" variant="primary" id="submitPolicyButton">Create
+                        Policy</nord-button>
                 </form>
             </nord-card>
 
@@ -108,55 +123,55 @@
                 <h2 slot="header">Assign Policy</h2>
                 <form id="assignPolicyForm" action="PolicyController" method="POST">
                     <nord-input label="Select Policy" name="policy" required></nord-input>
-                    <nord-input label="Assign To" name="assignedTo" required></nord-input>
+                    <nord-input class="n-margin-bs-l" label="Assign To" name="assignedTo" required></nord-input>
                     <input type="hidden" name="action" value="assign">
-                    <nord-button type="submit" variant="primary">Assign Policy</nord-button>
+                    <nord-button class="n-margin-bs-l" type="submit" variant="primary">Assign Policy</nord-button>
                 </form>
             </nord-card>
 
-          <!-- Add New User Card -->
+            <!-- Add New User Card -->
             <nord-card id="addUserCard" style="display: none;">
                 <h2 slot="header">Add New User</h2>
                 <form id="addUserForm" action="CustomerController" method="POST">
                     <nord-input label="Username" name="username" required></nord-input>
-                    <nord-input label="Email" name="email" required></nord-input>
-                    <nord-input label="Phone" name="phone" required></nord-input>
-                     <input type="hidden" name="action" value="add">
-                    <nord-button type="submit" variant="primary">Add User</nord-button>
+                    <nord-input class="n-margin-bs-l" label="Email" name="email" required></nord-input>
+                    <nord-input class="n-margin-bs-l" label="Phone" name="phone" required></nord-input>
+                    <input type="hidden" name="action" value="add">
+                    <nord-button class="n-margin-bs-l" type="submit" variant="primary">Add User</nord-button>
                 </form>
             </nord-card>
 
-<!-- View/Edit Users Card --> <nord-card id="viewEditUserCard"
-		style="display: none;">
-	<h2 slot="header">View/Edit Users</h2>
-	<div>
-		<table id="userTable" class="display">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>Email</th>
-					<th>Phone</th>
-					<th>Actions</th>
-				</tr>
-			</thead>
-			<tbody id="customerList">
-				
-			</tbody>
-		</table>
-	</div>
-	</nord-card>
-	<nord-card id="editUserCard" style="display: none;">
-    <h2 slot="header">Edit User</h2>
-    <form id="editUserForm" action="CustomerController" method="POST">
-        <nord-input label="Username" name="username" required></nord-input>
-        <nord-input label="Email" name="email" required></nord-input>
-        <nord-input label="Phone Number" name="phone"></nord-input>
-        <input type="hidden" name="userId">
-        <input type="hidden" name="action" value="edit">
-        <nord-button type="submit" variant="primary">Save Changes</nord-button>
-    </form>
-</nord-card>
-	
+            <!-- View/Edit Users Card -->
+            <nord-card id="viewEditUserCard" style="display: none;">
+                <h2 slot="header">View/Edit Users</h2>
+                <div>
+                    <table id="userTable" class="display">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="customerList">
+
+                        </tbody>
+                    </table>
+                </div>
+            </nord-card>
+            <nord-card id="editUserCard" style="display: none;">
+                <h2 slot="header">Edit User</h2>
+                <form id="editUserForm" action="CustomerController" method="POST">
+                    <nord-input label="Username" name="username" required></nord-input>
+                    <nord-input label="Email" name="email" required></nord-input>
+                    <nord-input label="Phone Number" name="phone"></nord-input>
+                    <input type="hidden" name="userId">
+                    <input type="hidden" name="action" value="edit">
+                    <nord-button type="submit" variant="primary">Save Changes</nord-button>
+                </form>
+            </nord-card>
+
 
             <!-- View Policies Card -->
             <nord-card id="viewPoliciesCard" style="display: none;">
@@ -177,97 +192,107 @@
             </nord-card>
         </nord-stack>
     </nord-layout>
-    <nord-command-menu></nord-command-menu>
 
     <script>
         const layout = document.querySelector("nord-layout");
         const commandMenu = document.querySelector("nord-command-menu");
+        const dashboardNavItem = document.getElementById("dashboardNavItem");
         const createPolicyNavItem = document.getElementById("createPolicyNavItem");
         const assignPolicyNavItem = document.getElementById("assignPolicyNavItem");
         const addUserNavItem = document.getElementById("addUserNavItem");
         const viewEditUserNavItem = document.getElementById("viewEditUserNavItem");
         const viewPoliciesNavItem = document.getElementById("viewPoliciesNavItem");
+        const dashboardCard = document.getElementById("dashboard");
         const createPolicyCard = document.getElementById("createPolicyCard");
         const assignPolicyCard = document.getElementById("assignPolicyCard");
         const addUserCard = document.getElementById("addUserCard");
         const viewEditUserCard = document.getElementById("viewEditUserCard");
         const viewPoliciesCard = document.getElementById("viewPoliciesCard");
+        document.addEventListener("DOMContentLoaded", () => {
+            toggleDisplay("dashboard");
+        });
+
+        const toggleDisplay = (cardToShow) => {
+            dashboardCard.style.display = cardToShow === "dashboard" ? "block" : "none";
+            createPolicyCard.style.display = cardToShow === "createPolicyCard" ? "block" : "none";
+            assignPolicyCard.style.display = cardToShow === "assignPolicyCard" ? "block" : "none";
+            addUserCard.style.display = cardToShow === "addUserCard" ? "block" : "none";
+            viewEditUserCard.style.display = cardToShow === "viewEditUserCard" ? "block" : "none";
+            viewPoliciesCard.style.display = cardToShow === "viewPoliciesCard" ? "block" : "none";
+        };
+
+        const toggleNavItem = (navItem) => {
+            dashboardNavItem.active = false;
+            createPolicyNavItem.active = false;
+            assignPolicyNavItem.active = false;
+            addUserNavItem.active = false;
+            viewEditUserNavItem.active = false;
+            viewPoliciesNavItem.active = false;
+
+            navItem.active = true;
+        };
+
+        dashboardNavItem.addEventListener("click", () => {
+            toggleDisplay("dashboard");
+            toggleNavItem(dashboardNavItem);
+        })
 
         createPolicyNavItem.addEventListener("click", () => {
-            createPolicyCard.style.display = "block";
-            assignPolicyCard.style.display = "none";
-            addUserCard.style.display = "none";
-            viewEditUserCard.style.display = "none";
-            viewPoliciesCard.style.display = "none";
-
-            // Reset form for creating a new policy
+            toggleDisplay("createPolicyCard");
+            toggleNavItem(createPolicyNavItem);
             resetPolicyForm();
         });
 
         assignPolicyNavItem.addEventListener("click", () => {
-            createPolicyCard.style.display = "none";
-            assignPolicyCard.style.display = "block";
-            addUserCard.style.display = "none";
-            viewEditUserCard.style.display = "none";
-            viewPoliciesCard.style.display = "none";
+            toggleDisplay("assignPolicyCard");
+            toggleNavItem(assignPolicyNavItem);
         });
 
         addUserNavItem.addEventListener("click", () => {
-            createPolicyCard.style.display = "none";
-            assignPolicyCard.style.display = "none";
-            addUserCard.style.display = "block";
-            viewEditUserCard.style.display = "none";
-            viewPoliciesCard.style.display = "none";
+            toggleDisplay("addUserCard");
+            toggleNavItem(addUserNavItem);
         });
 
         viewEditUserNavItem.addEventListener("click", () => {
-            createPolicyCard.style.display = "none";
-            assignPolicyCard.style.display = "none";
-            addUserCard.style.display = "none";
-            viewEditUserCard.style.display = "block";
-            viewPoliciesCard.style.display = "none";
+            toggleDisplay("viewEditUserCard");
+            toggleNavItem(viewEditUserNavItem);
             fetchUsers();
-            
         });
 
         viewPoliciesNavItem.addEventListener("click", () => {
-            createPolicyCard.style.display = "none";
-            assignPolicyCard.style.display = "none";
-            addUserCard.style.display = "none";
-            viewEditUserCard.style.display = "none";
-            viewPoliciesCard.style.display = "block";
+            toggleDisplay("viewPoliciesCard");
+            toggleNavItem(viewPoliciesNavItem);
             loadPolicies(); // Load policies when viewing
         });
 
-        function loadPolicies() {
+        const loadPolicies = () => {
             $.ajax({
                 url: 'PolicyController?action=view',
                 method: 'GET',
-                success: function (data) {
+                success: (data) => {
                     const policyList = document.getElementById("policyList");
-                    policyList.innerHTML = ""; // Clear existing policies
-                    data.forEach(policy => {
+                    policyList.innerHTML = "";
+                    data.forEach(({ policyId, policyName, policyType, premium }) => {
                         const row = document.createElement("tr");
                         row.innerHTML = `
-                            <td>${policy.policyName}</td>
-                            <td>${policy.policyType}</td>
-                            <td>${policy.premium}</td>
-                            <td>
-                                <nord-button variant="secondary" onclick="openUpdatePolicy('${policy.policyId}', '${policy.policyName}', '${policy.policyType}', ${policy.premium})">Update</nord-button>
-                                <nord-button variant="danger" onclick="deletePolicy('${policy.policyName}')">Delete</nord-button>
-                            </td>
-                        `;
+                    <td>${policyName}</td>
+                    <td>${policyType}</td>
+                    <td>${premium}</td>
+                    <td>
+                        <nord-button variant="secondary" onclick="openUpdatePolicy('${policyId}', '${policyName}', '${policyType}', ${premium})">Update</nord-button>
+                        <nord-button variant="danger" onclick="deletePolicy('${policyId}')">Delete</nord-button>
+                    </td>
+                `;
                         policyList.appendChild(row);
                     });
 
-                    // Initialize DataTable
                     $('#policyTable').DataTable();
                 },
-                error: function (error) {
+                error: (error) => {
                     console.error("Error loading policies:", error);
                 }
             });
-        }
+        };
 
         function openUpdatePolicy(policyId, policyName, policyType, premium) {
             // Prepopulate the create policy form with the selected policy's details
@@ -278,86 +303,82 @@
             document.getElementById("submitPolicyButton").innerText = "Update Policy"; // Change button text to Update
 
             // Show the create policy card
-            createPolicyCard.style.display = "block";
-            assignPolicyCard.style.display = "none";
-            addUserCard.style.display = "none";
-            viewEditUserCard.style.display = "none";
-            viewPoliciesCard.style.display = "none";
+            toggleDisplay("createPolicyCard");
         }
 
-        document.getElementById("createPolicyForm").addEventListener("submit", function (event) {
-            event.preventDefault(); // Prevent form submission
-            const action = document.getElementById("formAction").value; // Get the action (create/update)
+        document.getElementById("createPolicyForm").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const action = document.getElementById("formAction").value;
             const policyName = document.getElementById("policyName").value;
             const policyType = document.getElementById("policyType").value;
             const premium = document.getElementById("premium").value;
 
             $.ajax({
-                url: 'PolicyController?action=' + action,
+                url: `PolicyController?action=${action}`,
                 method: 'POST',
                 data: {
-                    policyName: policyName,
-                    policyType: policyType,
-                    premium: premium
+                    policyName,
+                    policyType,
+                    premium
                 },
-                success: function () {
-                    alert("Policy " + (action === "create" ? "created" : "updated") + " successfully.");
-                    loadPolicies(); // Reload policies
-                    resetPolicyForm(); 
+                success: () => {
+                    alert(`Policy ${action === "create" ? "created" : "updated"} successfully.`);
+                    loadPolicies();
+                    resetPolicyForm();
                 },
-                error: function (error) {
-                    console.error("Error " + (action === "create" ? "creating" : "updating") + " policy:", error);
+                error: (error) => {
+                    console.error(`Error ${action === "create" ? "creating" : "updating"} policy:`, error);
                 }
             });
         });
 
-        function resetPolicyForm() {
+        const resetPolicyForm = () => {
             document.getElementById("policyName").value = "";
             document.getElementById("policyType").value = "";
             document.getElementById("premium").value = "";
             document.getElementById("formAction").value = "create"; // Reset action to create
-            document.getElementById("submitPolicyButton").innerText = "Create Policy"; 
+            document.getElementById("submitPolicyButton").innerText = "Create Policy";
         }
 
-        function deletePolicy(policyName) {
+        const deletePolicy = (policyName) => {
             if (confirm("Are you sure you want to delete this policy?")) {
                 $.ajax({
                     url: `PolicyController?action=delete&name=${policyName}`,
                     method: 'POST',
-                    success: function () {
+                    success: () => {
                         alert("Policy deleted successfully.");
-                        loadPolicies(); 
+                        loadPolicies();
                     },
-                    error: function (error) {
+                    error: (error) => {
                         console.error("Error deleting policy:", error);
                     }
                 });
             }
         }
-        
+
         function fetchUsers() {
-            fetch('CustomerController') 
+            fetch('CustomerController')
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data); 
-                    displayUsers(data); 
+                    console.log(data);
+                    displayUsers(data);
                 })
                 .catch(error => {
                     console.error('Error fetching users:', error);
                 });
         }
 
-		function displayUsers(users) {
-    		const customerList = $('#customerList');
-    		customerList.empty(); 
+        function displayUsers(users) {
+            const customerList = $('#customerList');
+            customerList.empty();
 
-    		if (users.length === 0) {
-       			 customerList.append('<nord-banner variant="info">No users found.</nord-banner>');
-        		return;
-   			 }
+            if (users.length === 0) {
+                customerList.append('<nord-banner variant="info">No users found.</nord-banner>');
+                return;
+            }
 
-    		users.forEach(user => {
-       		 		const userItem = `
+            users.forEach(user => {
+                const userItem = `
             				<tr>
 				                <td>${user.name || 'N/A'}</td>
 				                <td>${user.email || 'N/A'}</td>
@@ -368,32 +389,32 @@
 				                </td>
            					 </tr>
       						  `;
-        	customerList.append(userItem);
-    		});
+                customerList.append(userItem);
+            });
 
-		    $('#userTable').DataTable({
-		        destroy: true,
-		        paging: true,
-		        searching: true,
-		        ordering: true,
-		        info: false,
-		    });
-		}
-		
-		function editUser(userId, name, email, phone) {
-            document.getElementById('viewEditUserCard').style.display = 'none';  
+            $('#userTable').DataTable({
+                destroy: true,
+                paging: true,
+                searching: true,
+                ordering: true,
+                info: false,
+            });
+        }
+
+        function editUser(userId, name, email, phone) {
+            document.getElementById('viewEditUserCard').style.display = 'none';
 
             const editUserCard = document.getElementById('editUserCard');
             editUserCard.style.display = 'block';
 
-            
+
             document.querySelector('#editUserForm [name="username"]').value = name;
             document.querySelector('#editUserForm [name="email"]').value = email;
             document.querySelector('#editUserForm [name="phone"]').value = phone;
             document.querySelector('#editUserForm [name="userId"]').value = userId;
         }
 
-		function deleteUser(userId) {
+        function deleteUser(userId) {
             if (confirm("Are you sure you want to delete this user?")) {
                 fetch(`CustomerController?action=delete&userId=${userId}`, { method: 'POST' })
                     .then(response => response.json())
@@ -401,7 +422,7 @@
                         if (result.success) {
                             alert('User deleted successfully');
                             $('#userTable').DataTable().destroy();
-                            fetchUsers(); 
+                            fetchUsers();
                         } else {
                             alert('Error deleting user');
                         }
@@ -412,25 +433,25 @@
                     });
             }
         }
-		
-		function assignPolicy(){
-			
-			fetch(`PolicyController?action=assign&policyNo=${userId}&assignTo=${userEmail}` ,{ method: 'POST'})
-				.then(response => response.json())
-				.then(result => {
+
+        function assignPolicy() {
+
+            fetch(`PolicyController?action=assign&policyNo=${userId}&assignTo=${userEmail}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(result => {
                     if (result.success) {
                         alert(' Policy Assigned to User successfully');
                         $('#userTable').DataTable().destroy();
-                        fetchUsers(); 
+                        fetchUsers();
                     } else {
                         alert('Error deleting user');
                     }
                 })
-				.catch(error => {
-                        console.error('Error deleting user:', error);
-                        alert('An error occurred. Please try again.');
-                });	
-		}
+                .catch(error => {
+                    console.error('Error deleting user:', error);
+                    alert('An error occurred. Please try again.');
+                });
+        }
 
     </script>
 
