@@ -1,95 +1,180 @@
-package com.ibms.repository;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibms.model.Customer;
-
-import jakarta.servlet.ServletContext;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
-
-public class CustomerRepository {
-    private static final Logger LOGGER = Logger.getLogger(CustomerRepository.class.getName());
-
-    private final ObjectMapper objectMapper;
-    //private static final String FILE_PATH = "C:\\Users\\neelk\\eclipse-workspace\\BrokerManagementApp\\src\\main\\webapp\\customers.json";  // Replace with your actual file path
-
-    private final String FILE_PATH;
-    
-    public CustomerRepository(ServletContext context) {
-        this.objectMapper = new ObjectMapper();
-        this.FILE_PATH = context.getRealPath("/customers.json");
-        
-    }
-
-    public List<Customer> getAllCustomers() {
-        try {
-            return objectMapper.readValue(new File(FILE_PATH),
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, Customer.class));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new ArrayList<>(); 
-        }
-    }
-
-    public void saveCustomer(Customer customer) {
-        List<Customer> customers = getAllCustomers();
-        LOGGER.info("Current Customers: " + customers);
-
-        customers.add(customer);
-        try {
-            objectMapper.writeValue(new File(FILE_PATH), customers);
-            LOGGER.info("Customers saved to file: " + FILE_PATH);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    
-    public boolean deleteUserById(String userId) {
-        List<Customer> customers = getAllCustomers();
-        boolean removed = customers.removeIf(customer -> customer.getId().equals(userId));
-
-        if (removed) {
-            try {               
-                objectMapper.writeValue(new File(FILE_PATH), customers);
-                LOGGER.info("Customer with ID " + userId + " deleted successfully.");
-                return true;
-            } catch (IOException e) {
-                LOGGER.severe("Error saving customers after deletion: " + e.getMessage());
-                e.printStackTrace();
-            }
-        } else {
-            LOGGER.warning("Customer with ID " + userId + " not found.");
-        }
-        return false;
-    }
-    
-    public Customer getCustomerById(String userId) {
-        List<Customer> customers = getAllCustomers();
-        return customers.stream()
-            .filter(customer -> customer.getId().equals(userId))
-            .findFirst()
-            .orElse(null); 
-    }
-
-    public void updateCustomer(Customer updatedCustomer) {
-        List<Customer> customers = getAllCustomers();
-        for (int i = 0; i < customers.size(); i++) {
-            if (customers.get(i).getId().equals(updatedCustomer.getId())) {
-                customers.set(i, updatedCustomer);
-                break;
-            }
-        }
-        try {
-            objectMapper.writeValue(new File(FILE_PATH), customers);
-            LOGGER.info("Customer updated successfully.");
-        } catch (IOException e) {
-            LOGGER.severe("Error saving customers after update: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    
-}
+//package com.ibms.repository;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.util.logging.Logger;
+//
+//import org.hibernate.Session;
+//import org.hibernate.query.Query;
+//
+//import com.ibms.model.Customer;
+//import com.ibms.util.HibernateUtil;
+//
+//public class CustomerRepository {
+//    private static final Logger LOGGER = Logger.getLogger(CustomerRepository.class.getName());
+//
+//    public List<Customer> getAllCustomers() {
+//        List<Customer> customers = new ArrayList<>();
+//        try {
+//            Session session = HibernateUtil.getCurrentSession();
+//            HibernateUtil.beginTransaction();
+//
+//            Query<Customer> query = session.createQuery("FROM Customer", Customer.class);
+//            customers = query.getResultList();
+//
+//            HibernateUtil.commitTransaction();
+//            LOGGER.info("Retrieved all customers: " + customers.size());
+//        } catch (Exception e) {
+//            HibernateUtil.rollbackTransaction();
+//            LOGGER.severe("Error retrieving customers: " + e.getMessage());
+//            e.printStackTrace();
+//        } finally {
+//            HibernateUtil.closeCurrentSession();
+//        }
+//        return customers;
+//    }
+//
+//    public void saveCustomer(Customer customer) {
+//        try {
+//            Session session = HibernateUtil.getCurrentSession();
+//            HibernateUtil.beginTransaction();
+//
+//            session.save(customer);
+//
+//            HibernateUtil.commitTransaction();
+//            LOGGER.info("Customer saved successfully: " + customer.getId());
+//        } catch (Exception e) {
+//            HibernateUtil.rollbackTransaction();
+//            LOGGER.severe("Error saving customer: " + e.getMessage());
+//            e.printStackTrace();
+//        } finally {
+//            HibernateUtil.closeCurrentSession();
+//        }
+//    }
+//
+//    public void updateCustomer(Customer updatedCustomer) {
+//        try {
+//            Session session = HibernateUtil.getCurrentSession();
+//            HibernateUtil.beginTransaction();
+//
+//            Customer existingCustomer = session.get(Customer.class, updatedCustomer.getId());
+//
+//            if (existingCustomer != null) {
+//                session.update(updatedCustomer);
+//                HibernateUtil.commitTransaction();
+//                LOGGER.info("Customer updated successfully: " + updatedCustomer.getId());
+//            } else {
+//                HibernateUtil.rollbackTransaction();
+//                LOGGER.warning("Customer not found: " + updatedCustomer.getId());
+//            }
+//        } catch (Exception e) {
+//            HibernateUtil.rollbackTransaction();
+//            LOGGER.severe("Error updating customer: " + e.getMessage());
+//            e.printStackTrace();
+//        } finally {
+//            HibernateUtil.closeCurrentSession();
+//        }
+//    }
+//
+//    public boolean deleteCustomerById(Long id) {
+//        try {
+//            Session session = HibernateUtil.getCurrentSession();
+//            HibernateUtil.beginTransaction();
+//
+//            Customer customer = session.get(Customer.class, id);
+//            if (customer != null) {
+//                session.delete(customer);
+//                HibernateUtil.commitTransaction();
+//                LOGGER.info("Customer deleted successfully: " + id);
+//                return true;
+//            } else {
+//                HibernateUtil.rollbackTransaction();
+//                LOGGER.warning("Customer not found for deletion: " + id);
+//                return false;
+//            }
+//        } catch (Exception e) {
+//            HibernateUtil.rollbackTransaction();
+//            LOGGER.severe("Error deleting customer: " + e.getMessage());
+//            e.printStackTrace();
+//            return false;
+//        } finally {
+//            HibernateUtil.closeCurrentSession();
+//        }
+//    }
+//
+//    public Customer getCustomerById(Long id) {
+//        Customer customer = null;
+//        try {
+//            Session session = HibernateUtil.getCurrentSession();
+//            HibernateUtil.beginTransaction();
+//
+//            customer = session.get(Customer.class, id);
+//
+//            HibernateUtil.commitTransaction();
+//            if (customer != null) {
+//                LOGGER.info("Retrieved customer: " + id);
+//            } else {
+//                LOGGER.warning("Customer not found: " + id);
+//            }
+//        } catch (Exception e) {
+//            HibernateUtil.rollbackTransaction();
+//            LOGGER.severe("Error retrieving customer: " + e.getMessage());
+//            e.printStackTrace();
+//        } finally {
+//            HibernateUtil.closeCurrentSession();
+//        }
+//        return customer;
+//    }
+//
+//    public List<Customer> searchCustomers(String searchTerm) {
+//        List<Customer> customers = new ArrayList<>();
+//        try {
+//            Session session = HibernateUtil.getCurrentSession();
+//            HibernateUtil.beginTransaction();
+//
+//            Query<Customer> query = session.createQuery(
+//                "FROM Customer WHERE firstName LIKE :searchTerm " +
+//                "OR lastName LIKE :searchTerm " +
+//                "OR email LIKE :searchTerm", Customer.class);
+//            query.setParameter("searchTerm", "%" + searchTerm + "%");
+//            customers = query.getResultList();
+//
+//            HibernateUtil.commitTransaction();
+//            LOGGER.info("Found " + customers.size() + " customers matching: " + searchTerm);
+//        } catch (Exception e) {
+//            HibernateUtil.rollbackTransaction();
+//            LOGGER.severe("Error searching customers: " + e.getMessage());
+//            e.printStackTrace();
+//        } finally {
+//            HibernateUtil.closeCurrentSession();
+//        }
+//        return customers;
+//    }
+//
+//    public Customer getCustomerByEmail(String email) {
+//        Customer customer = null;
+//        try {
+//            Session session = HibernateUtil.getCurrentSession();
+//            HibernateUtil.beginTransaction();
+//
+//            Query<Customer> query = session.createQuery(
+//                "FROM Customer WHERE email = :email", Customer.class);
+//            query.setParameter("email", email);
+//            customer = query.uniqueResult();
+//
+//            HibernateUtil.commitTransaction();
+//            if (customer != null) {
+//                LOGGER.info("Retrieved customer by email: " + email);
+//            } else {
+//                LOGGER.warning("Customer not found with email: " + email);
+//            }
+//        } catch (Exception e) {
+//            HibernateUtil.rollbackTransaction();
+//            LOGGER.severe("Error retrieving customer by email: " + e.getMessage());
+//            e.printStackTrace();
+//        } finally {
+//            HibernateUtil.closeCurrentSession();
+//        }
+//        return customer;
+//    }
+//}

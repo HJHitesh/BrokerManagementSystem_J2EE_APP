@@ -1,111 +1,174 @@
 package com.ibms.repository;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ibms.model.Policy;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import jakarta.servlet.ServletContext;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
+
+import com.ibms.model.Policy;
+import com.ibms.util.HibernateUtil;
 
 public class PolicyRepository {
-	
-	private static final Logger LOGGER = Logger.getLogger(PolicyRepository.class.getName());
-
-	
-    private final ObjectMapper objectMapper;
-    
-    private final String FILE_PATH;
-    
-    public PolicyRepository(ServletContext context) {
-        this.objectMapper = new ObjectMapper();
-        this.FILE_PATH = context.getRealPath("/policies.json");
-        
-    }
+    private static final Logger LOGGER = Logger.getLogger(PolicyRepository.class.getName());
 
     public List<Policy> getAllPolicies() {
-    	try {
-            // Read the JSON file into a list of Policy objects
-            return objectMapper.readValue(new File(FILE_PATH),
-                    objectMapper.getTypeFactory().constructCollectionType(List.class, Policy.class));
-        } catch (IOException e) {
+        List<Policy> policies = new ArrayList<>();
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query<Policy> query = session.createQuery("FROM Policy", Policy.class);
+            policies = query.getResultList();
+            transaction.commit();
+            LOGGER.info("Retrieved all policies: " + policies.size());
+        } catch (Exception e) {
+            if (transaction != null) {
+				transaction.rollback();
+			}
+            LOGGER.severe("Error retrieving policies: " + e.getMessage());
             e.printStackTrace();
-            return new ArrayList<>(); // Return an empty list if there are errors
         }
+        return policies;
     }
 
     public void savePolicy(Policy policy) {
-    	List<Policy> policies = getAllPolicies();
-        System.out.println("Current Policies: " + policies); 
-        
-        LOGGER.info("Current Policies: " + policies);
-        // Debugging line
-        policies.add(policy);
-        System.out.println("Adding Policy: " + policy); // Debugging line
-        try {
-            objectMapper.writeValue(new File(FILE_PATH), policies);
-            System.out.println("Policies saved to file: " + FILE_PATH); // Debugging line
-        } catch (IOException e) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.save(policy);
+            transaction.commit();
+            LOGGER.info("Policy saved successfully: " + policy.getPolicyNumber());
+        } catch (Exception e) {
+            if (transaction != null) {
+				transaction.rollback();
+			}
+            LOGGER.severe("Error saving policy: " + e.getMessage());
             e.printStackTrace();
         }
     }
-    
+
     public void updatePolicy(Policy updatedPolicy) {
-		List<Policy> policies = getAllPolicies();
-		boolean policyFound = false;
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query<Policy> query = session.createQuery(
+                "FROM Policy WHERE policyNumber = :policyNumber", Policy.class);
+            query.setParameter("policyNumber", updatedPolicy.getPolicyNumber());
+            Policy existingPolicy = query.uniqueResult();
 
-		for (int i = 0; i < policies.size(); i++) {
-			Policy policy = policies.get(i);
-			if (policy.getPolicyName().equals(updatedPolicy.getPolicyName())) {
-				policies.set(i, updatedPolicy); 
-				policyFound = true;
-				System.out.println("Updated Policy: " + updatedPolicy);
-				break;
-			}
-		}
-
-		if (policyFound) {
-			try {
-				objectMapper.writeValue(new File(FILE_PATH), policies);
-				System.out.println("Policies updated and saved to file: " + FILE_PATH); // Debugging line
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} else {
-			System.out.println("Policy with ID " + updatedPolicy.getPolicyName() + " not found."); // Debugging line
-		}
-	}
-    
-    public void deletePolicy(String policyName) {
-        List<Policy> policies = getAllPolicies();
-        boolean policyFound = false;
-
-        for (int i = 0; i < policies.size(); i++) {
-            Policy policy = policies.get(i);
-            if (policy.getPolicyName().equals(policyName)) { 
-                policies.remove(i);
-                policyFound = true;
-                System.out.println("Deleted Policy with Name: " + policyName); 
-                break;
+            if (existingPolicy != null) {
+                session.update(updatedPolicy);
+                transaction.commit();
+                LOGGER.info("Policy updated successfully: " + updatedPolicy.getPolicyNumber());
+            } else {
+                transaction.rollback();
+                LOGGER.warning("Policy not found: " + updatedPolicy.getPolicyNumber());
             }
-        }
-
-        if (policyFound) {
-            try {
-                objectMapper.writeValue(new File(FILE_PATH), policies);
-                System.out.println("Policies updated and saved to file: " + FILE_PATH); 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            System.out.println("Policy with ID " + policyName + " not found."); 
+        } catch (Exception e) {
+            if (transaction != null) {
+				transaction.rollback();
+			}
+            LOGGER.severe("Error updating policy: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-}
+    public void deletePolicy(String policyNumber) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query<Policy> query = session.createQuery(
+                "FROM Policy WHERE policyNumber = :policyNumber", Policy.class);
+            query.setParameter("policyNumber", policyNumber);
+            Policy policy = query.uniqueResult();
 
+            if (policy != null) {
+                session.delete(policy);
+                transaction.commit();
+                LOGGER.info("Policy deleted successfully: " + policyNumber);
+            } else {
+                transaction.rollback();
+                LOGGER.warning("Policy not found for deletion: " + policyNumber);
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+				transaction.rollback();
+			}
+            LOGGER.severe("Error deleting policy: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public Policy getPolicyByNumber(String policyNumber) {
+        Policy policy = null;
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query<Policy> query = session.createQuery(
+                "FROM Policy WHERE policyNumber = :policyNumber", Policy.class);
+            query.setParameter("policyNumber", policyNumber);
+            policy = query.uniqueResult();
+            transaction.commit();
+
+            if (policy != null) {
+                LOGGER.info("Retrieved policy: " + policyNumber);
+            } else {
+                LOGGER.warning("Policy not found: " + policyNumber);
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+				transaction.rollback();
+			}
+            LOGGER.severe("Error retrieving policy: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return policy;
+    }
+
+    public List<Policy> searchPolicies(String searchTerm) {
+        List<Policy> policies = new ArrayList<>();
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            Query<Policy> query = session.createQuery(
+                "FROM Policy WHERE policyNumber LIKE :searchTerm " +
+                "OR type LIKE :searchTerm", Policy.class);
+            query.setParameter("searchTerm", "%" + searchTerm + "%");
+            policies = query.getResultList();
+            transaction.commit();
+            LOGGER.info("Found " + policies.size() + " policies matching: " + searchTerm);
+        } catch (Exception e) {
+            if (transaction != null) {
+				transaction.rollback();
+			}
+            LOGGER.severe("Error searching policies: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return policies;
+    }
+
+    public Policy getPolicyById(Long id) {
+        Policy policy = null;
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            policy = session.get(Policy.class, id);
+            transaction.commit();
+            if (policy != null) {
+                LOGGER.info("Retrieved policy with ID: " + id);
+            } else {
+                LOGGER.warning("Policy not found with ID: " + id);
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+				transaction.rollback();
+			}
+            LOGGER.severe("Error retrieving policy by ID: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return policy;
+    }
+}
