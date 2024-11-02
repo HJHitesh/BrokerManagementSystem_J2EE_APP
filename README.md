@@ -9,6 +9,7 @@ Insurance Broker Management System (IBMS) is designed to streamline the manageme
 
 - **Customer Management:** Create, update, and view customer details.
 - **Policy Management:** Manage insurance policies, including creation, updates, and linking policies to customers.
+- **Report:** View total number of customer managed by each broker, policies and claim processed.
 
 
 ## Installation
