@@ -171,4 +171,31 @@ public class PolicyRepository {
         }
         return policy;
     }
+
+    public long countPolicies() {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			return (long) session.createQuery("SELECT COUNT(p) FROM Policy p").uniqueResult();
+		}
+	}
+
+	public long countClaimsByStatus(ClaimStatus status) {
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			Query<Long> query = session.createQuery("SELECT COUNT(c) FROM Claim c WHERE c.status = :status",
+					Long.class);
+			query.setParameter("status", status);
+			return query.uniqueResult();
+		}
+	}
+
+	public Map<Customer, Long> countCustomersByBroker() {
+		Map<Customer, Long> customerCountMap = new HashMap<>();
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+			List<Object[]> results = session
+					.createQuery("SELECT p.customer, COUNT(p) FROM Policy p GROUP BY p.customer").getResultList();
+			for (Object[] row : results) {
+				customerCountMap.put((Customer) row[0], (Long) row[1]);
+			}
+		}
+		return customerCountMap;
+	}
 }
