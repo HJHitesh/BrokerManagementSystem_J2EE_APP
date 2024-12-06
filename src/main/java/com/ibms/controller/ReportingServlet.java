@@ -1,4 +1,4 @@
-package com.ibms.servlet;
+package com.ibms.controller;
 
 import java.io.IOException;
 import java.util.Map;

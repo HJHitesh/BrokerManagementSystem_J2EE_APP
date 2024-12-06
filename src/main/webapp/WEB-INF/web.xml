@@ -23,4 +23,62 @@
         <servlet-name>ReportingServlet</servlet-name>
         <url-pattern>/report</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <description></description>
+        <display-name>PolicyQuoteServlet</display-name>
+        <servlet-name>PolicyQuoteServlet</servlet-name>
+        <servlet-class>com.insurance.PolicyQuoteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PolicyQuoteServlet</servlet-name>
+        <url-pattern>/PolicyQuoteServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PolicyQuoteServlet</servlet-name>
+        <url-pattern>/getPolicyQuote</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>policyForm.jsp</welcome-file>
+    </welcome-file-list>
+    <servlet>
+        <description></description>
+        <display-name>PolicyRenewalServlet</display-name>
+        <servlet-name>PolicyRenewalServlet</servlet-name>
+        <servlet-class>com.ibms.PolicyRenewalServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PolicyRenewalServlet</servlet-name>
+        <url-pattern>/PolicyRenewalServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <description></description>
+        <display-name>PolicyCancellationServlet</display-name>
+        <servlet-name>PolicyCancellationServlet</servlet-name>
+        <servlet-class>com.ibms.PolicyCancellationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PolicyCancellationServlet</servlet-name>
+        <url-pattern>/PolicyCancellationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <description></description>
+        <display-name>PolicyCancelServlet</display-name>
+        <servlet-name>PolicyCancelServlet</servlet-name>
+        <servlet-class>com.ibms.PolicyCancelServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PolicyCancelServlet</servlet-name>
+        <url-pattern>/PolicyCancelServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <description></description>
+        <display-name>PolicyClaimsHistoryServlet</display-name>
+        <servlet-name>PolicyClaimsHistoryServlet</servlet-name>
+        <servlet-class>com.ibms.PolicyClaimsHistoryServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PolicyClaimsHistoryServlet</servlet-name>
+        <url-pattern>/PolicyClaimsHistoryServlet</url-pattern>
+    </servlet-mapping>
 </web-app>
