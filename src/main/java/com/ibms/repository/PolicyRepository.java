@@ -198,4 +198,37 @@ public class PolicyRepository {
 		}
 		return customerCountMap;
 	}
+
+    public List<Claim> getAllClaims() {
+		try (Session session = sessionFactory.openSession()) {
+			return session.createQuery("from Claim", Claim.class).getResultList();
+		}
+	}
+
+	public List<Claim> getClaimsByPolicyId(String policyId) {
+		try (Session session = sessionFactory.openSession()) {
+			return session.createQuery("from Claim where policyId = :policyId", Claim.class)
+					.setParameter("policyId", policyId).getResultList();
+		}
+	}
+
+	public List<Claim> filterClaimsByDate(Date startDate, Date endDate) {
+		try (Session session = sessionFactory.openSession()) {
+			return session.createQuery("from Claim where claimDate between :startDate and :endDate", Claim.class)
+					.setParameter("startDate", startDate).setParameter("endDate", endDate).getResultList();
+		}
+	}
+
+	public List<Claim> filterClaimsByStatus(String status) {
+		try (Session session = sessionFactory.openSession()) {
+			return session.createQuery("from Claim where status = :status", Claim.class).setParameter("status", status)
+					.getResultList();
+		}
+	}
+
+	public double calculatePremium(String policyType, double coverageAmount, int termLength) {
+		double baseRate = coverageAmount / termLength;
+		double multiplier = policyType.equalsIgnoreCase("premium") ? 1.2 : 1.0;
+		return baseRate * multiplier;
+	}
 }
