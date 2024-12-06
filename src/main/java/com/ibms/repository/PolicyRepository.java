@@ -231,4 +231,17 @@ public class PolicyRepository {
 		double multiplier = policyType.equalsIgnoreCase("premium") ? 1.2 : 1.0;
 		return baseRate * multiplier;
 	}
+  
+	public Policy findPolicyById(String policyId) {
+		try (Session session = sessionFactory.openSession()) {
+			return session.get(Policy.class, policyId);
+		}
+	}
+
+	public void close() {
+		if (sessionFactory != null) {
+			sessionFactory.close();
+		}
+	}
+
 }
