@@ -238,6 +238,33 @@ public class PolicyRepository {
 		}
 	}
 
+    public boolean cancelPolicy(String policyId, String cancellationReason) {
+		Transaction transaction = null;
+		try (Session session = sessionFactory.openSession()) {
+			transaction = session.beginTransaction();
+
+			// Fetch the policy
+			Policy policy = session.get(Policy.class, policyId);
+			if (policy != null) {
+				policy.setCanceled(true);
+				policy.setCancellationReason(cancellationReason);
+
+				// Update the policy
+				session.update(policy);
+				transaction.commit();
+				return true;
+			} else {
+				return false; // Policy not found
+			}
+		} catch (Exception e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			throw e;
+		}
+	}
+
+
 	public void close() {
 		if (sessionFactory != null) {
 			sessionFactory.close();

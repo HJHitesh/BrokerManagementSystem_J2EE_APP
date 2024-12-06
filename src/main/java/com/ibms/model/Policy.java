@@ -31,6 +31,9 @@ public class Policy {
     @Column(name = "policy_number", nullable = false, unique = true)
     private String policyNumber;
 
+	@Column(name = "cancellationReason", nullable = false)
+	private String cancellationReason;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false)
     private Customer customer;
